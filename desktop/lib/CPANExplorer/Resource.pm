@@ -58,4 +58,103 @@ __[ xrc ]__
 			</object>
 		</object>
 	</object>
+	<object class="wxFrame" name="about_frame">
+		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
+		<size>300,120</size>
+		<title></title>
+		<centered>1</centered>
+		<object class="wxPanel" name="m_panel1">
+			<style>wxTAB_TRAVERSAL</style>
+			<object class="wxBoxSizer">
+				<orient>wxVERTICAL</orient>
+				<object class="sizeritem">
+					<option>1</option>
+					<flag>wxEXPAND</flag>
+					<border>5</border>
+					<object class="wxBoxSizer">
+						<orient>wxHORIZONTAL</orient>
+						<object class="spacer">
+							<option>1</option>
+							<flag>wxEXPAND</flag>
+							<border>5</border>
+							<size>0,0</size>
+						</object>
+						<object class="sizeritem">
+							<option>0</option>
+							<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+							<border>5</border>
+							<object class="wxStaticText" name="about_statictext_version">
+								<label>CPAN Explorer - version</label>
+								<wrap>-1</wrap>
+							</object>
+						</object>
+						<object class="spacer">
+							<option>1</option>
+							<flag>wxEXPAND</flag>
+							<border>5</border>
+							<size>0,0</size>
+						</object>
+					</object>
+				</object>
+				<object class="sizeritem">
+					<option>1</option>
+					<flag>wxEXPAND</flag>
+					<border>5</border>
+					<object class="wxBoxSizer">
+						<orient>wxHORIZONTAL</orient>
+						<object class="spacer">
+							<option>1</option>
+							<flag>wxEXPAND</flag>
+							<border>5</border>
+							<size>0,0</size>
+						</object>
+						<object class="sizeritem">
+							<option>0</option>
+							<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+							<border>5</border>
+							<object class="wxStaticText" name="about_statictext_copyright">
+								<label>(C)</label>
+								<wrap>-1</wrap>
+							</object>
+						</object>
+						<object class="spacer">
+							<option>1</option>
+							<flag>wxEXPAND</flag>
+							<border>5</border>
+							<size>0,0</size>
+						</object>
+					</object>
+				</object>
+				<object class="sizeritem">
+					<option>1</option>
+					<flag>wxEXPAND</flag>
+					<border>5</border>
+					<object class="wxBoxSizer">
+						<orient>wxHORIZONTAL</orient>
+						<object class="spacer">
+							<option>1</option>
+							<flag>wxEXPAND</flag>
+							<border>5</border>
+							<size>0,0</size>
+						</object>
+						<object class="sizeritem">
+							<option>0</option>
+							<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+							<border>5</border>
+							<object class="wxButton" name="about_button_close">
+								<label>_Close</label>
+								<default>0</default>
+							</object>
+						</object>
+						<object class="spacer">
+							<option>1</option>
+							<flag>wxEXPAND</flag>
+							<border>5</border>
+							<size>0,0</size>
+						</object>
+					</object>
+				</object>
+			</object>
+		</object>
+	</object>
 </resource>

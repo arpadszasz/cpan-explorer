@@ -8,6 +8,7 @@ use MooseX::NonMoose;
 use Wx ':everything';
 use Wx::Event ':everything';
 use Wx::XRC;
+use CPANExplorer::Wx::About;
 
 extends 'Wx::Frame';
 with 'CPANExplorer::Role::Setup';
@@ -34,6 +35,12 @@ sub initialize {
         sub { $self->_close_window },
     );
 
+    EVT_MENU(
+        $self,
+        Wx::XmlResource::GetXRCID('main_menu_help_about'),
+        sub { $self->_show_about_dialog },
+    );
+
     EVT_CLOSE( $self, sub { $self->_close_window } );
 
     return;
@@ -52,6 +59,21 @@ sub _close_window {
     return if $selection == wxID_NO;
 
     $self->frames->{main_frame}->Destroy;
+
+    return;
+}
+
+sub _show_about_dialog {
+    my $self = shift;
+
+    CPANExplorer::Wx::About->new(
+        {
+            cfg          => $self->cfg,
+            frames       => $self->frames,
+            model        => $self->model,
+            xrc_resource => $self->xrc_resource,
+        }
+    )->Show(1);
 
     return;
 }
