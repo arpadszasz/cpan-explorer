@@ -1,0 +1,5 @@
+CPAN explorer wxPerl GUI application
+------------------------------------
+
+cpan-explorer is a standalone GUI for managing CPAN packages for (multiple)
+Perl installations.
