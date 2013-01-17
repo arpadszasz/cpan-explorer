@@ -8,6 +8,7 @@ use MooseX::NonMoose;
 use Wx ':everything';
 use Wx::Event ':everything';
 use Wx::XRC;
+use CPANExplorer::Wx::Preferences;
 use CPANExplorer::Wx::About;
 
 extends 'Wx::Frame';
@@ -28,6 +29,12 @@ sub initialize {
 
     $self->xrc_resource->LoadFrame( $self, undef, 'main_frame' );
     $self->frames->{main_frame} = $self->FindWindow('main_frame');
+
+    EVT_MENU(
+        $self,
+        Wx::XmlResource::GetXRCID('main_menu_file_preferences'),
+        sub { $self->_show_preferences_dialog },
+    );
 
     EVT_MENU(
         $self,
@@ -67,6 +74,21 @@ sub _show_about_dialog {
     my $self = shift;
 
     CPANExplorer::Wx::About->new(
+        {
+            cfg          => $self->cfg,
+            frames       => $self->frames,
+            model        => $self->model,
+            xrc_resource => $self->xrc_resource,
+        }
+    )->Show(1);
+
+    return;
+}
+
+sub _show_preferences_dialog {
+    my $self = shift;
+
+    CPANExplorer::Wx::Preferences->new(
         {
             cfg          => $self->cfg,
             frames       => $self->frames,
