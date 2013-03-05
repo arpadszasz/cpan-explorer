@@ -82,7 +82,7 @@ __[ xrc ]__
 									<option>0</option>
 									<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
 									<border>5</border>
-									<object class="wxTextCtrl" name="m_textCtrl2">
+									<object class="wxTextCtrl" name="main_textctrl_search">
 										<size>250,-1</size>
 										<value></value>
 									</object>
@@ -91,7 +91,7 @@ __[ xrc ]__
 									<option>0</option>
 									<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
 									<border>5</border>
-									<object class="wxButton" name="m_button5">
+									<object class="wxButton" name="main_button_search">
 										<label>_Search</label>
 										<default>0</default>
 									</object>
@@ -114,8 +114,8 @@ __[ xrc ]__
 									<option>1</option>
 									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
-									<object class="wxListCtrl" name="m_listCtrl1">
-										<style>wxLC_LIST</style>
+									<object class="wxListCtrl" name="main_listctrl_search">
+										<style>wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES</style>
 									</object>
 								</object>
 							</object>

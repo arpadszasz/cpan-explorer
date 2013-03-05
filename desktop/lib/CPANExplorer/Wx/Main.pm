@@ -10,6 +10,8 @@ use Wx::Event ':everything';
 use Wx::XRC;
 use CPANExplorer::Wx::Preferences;
 use CPANExplorer::Wx::About;
+use HTTP::Tiny;
+use JSON;
 
 extends 'Wx::Frame';
 with 'CPANExplorer::Role::Setup';
@@ -46,6 +48,12 @@ sub initialize {
         $self,
         Wx::XmlResource::GetXRCID('main_menu_help_about'),
         sub { $self->_show_about_dialog },
+    );
+
+    EVT_BUTTON(
+        $self,
+        Wx::XmlResource::GetXRCID('main_button_search'),
+        sub { $self->_search_module },
     );
 
     EVT_CLOSE( $self, sub { $self->_close_window } );
@@ -96,6 +104,64 @@ sub _show_preferences_dialog {
             xrc_resource => $self->xrc_resource,
         }
     )->Show(1);
+
+    return;
+}
+
+sub _search_module {
+    my $self = shift;
+
+    my $listctrl = $self->FindWindow('main_listctrl_search');
+    $listctrl->ClearAll;
+
+    my $module = $self->FindWindow('main_textctrl_search')->GetValue;
+
+    # Adapted by code from Toby Inkster
+    # http://blogs.perl.org/users/toby_inkster/2013/03/not-using-that-any-more.html
+    my $query = {
+        size   => 5000,
+        fields => [qw(distribution version)],
+        query  => { match_all => {} },
+        filter => {
+            and => [
+                { term => { "release.dependency.module" => $module } },
+                { term => { "release.status"            => "latest" } },
+            ]
+        }
+    };
+
+    Wx::BusyCursor->new;
+
+    my $response = "HTTP::Tiny"->new->post(
+        "http://api.metacpan.org/v0/release/_search" => {
+            content => to_json($query),
+            headers => {
+                "Content-Type" => "application/json",
+            },
+        },
+    );
+
+    my $result = from_json( $response->{content} );
+
+    $listctrl->Show(0);
+    $listctrl->InsertColumn( 0, '#' );
+    $listctrl->InsertColumn( 1, 'Distribution' );
+    $listctrl->InsertColumn( 2, 'Version' );
+
+    foreach ( 1 .. ( scalar @{ $result->{hits}->{hits} } ) ) {
+        my $dist = $result->{hits}->{hits}->[ $_ - 1 ];
+
+        my $row = $listctrl->InsertStringImageItem(
+            $_,
+            $_,
+            0
+        );
+        $listctrl->SetItemData( $row, $_ );
+        $listctrl->SetItem( $row, 1, $dist->{fields}->{distribution} );
+        $listctrl->SetItem( $row, 2, $dist->{fields}->{version} );
+    }
+
+    $listctrl->Show(1);
 
     return;
 }
