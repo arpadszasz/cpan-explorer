@@ -5,6 +5,7 @@
 		<size>700,550</size>
 		<title>CPAN Explorer</title>
 		<centered>1</centered>
+		<aui_managed>0</aui_managed>
 		<object class="wxMenuBar" name="main_menubar">
 			<label>MyMenuBar</label>
 			<object class="wxMenu" name="main_menu_file">
@@ -26,12 +27,86 @@
 				</object>
 			</object>
 		</object>
+		<object class="wxNotebook" name="m_notebook2">
+			<object class="notebookpage">
+				<label>Search</label>
+				<selected>1</selected>
+				<object class="wxPanel" name="m_panel3">
+					<style>wxTAB_TRAVERSAL</style>
+					<object class="wxBoxSizer">
+						<orient>wxVERTICAL</orient>
+						<object class="sizeritem">
+							<option>0</option>
+							<flag>wxEXPAND</flag>
+							<border>5</border>
+							<object class="wxBoxSizer">
+								<orient>wxHORIZONTAL</orient>
+								<object class="spacer">
+									<option>1</option>
+									<flag>wxEXPAND</flag>
+									<border>5</border>
+									<size>0,0</size>
+								</object>
+								<object class="sizeritem">
+									<option>0</option>
+									<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+									<border>5</border>
+									<object class="wxTextCtrl" name="m_textCtrl2">
+										<size>250,-1</size>
+										<value></value>
+									</object>
+								</object>
+								<object class="sizeritem">
+									<option>0</option>
+									<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+									<border>5</border>
+									<object class="wxButton" name="m_button5">
+										<label>_Search</label>
+										<default>0</default>
+									</object>
+								</object>
+								<object class="spacer">
+									<option>1</option>
+									<flag>wxEXPAND</flag>
+									<border>5</border>
+									<size>0,0</size>
+								</object>
+							</object>
+						</object>
+						<object class="sizeritem">
+							<option>1</option>
+							<flag>wxEXPAND</flag>
+							<border>5</border>
+							<object class="wxBoxSizer">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<option>1</option>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<object class="wxListCtrl" name="m_listCtrl1">
+										<style>wxLC_LIST</style>
+									</object>
+								</object>
+							</object>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="notebookpage">
+				<label>Installed</label>
+				<selected>0</selected>
+				<object class="wxPanel" name="m_panel4">
+					<style>wxTAB_TRAVERSAL</style>
+				</object>
+			</object>
+		</object>
 	</object>
 	<object class="wxFrame" name="about_frame">
 		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
 		<size>300,120</size>
 		<title></title>
 		<centered>1</centered>
+		<aui_managed>0</aui_managed>
 		<object class="wxPanel" name="m_panel1">
 			<style>wxTAB_TRAVERSAL</style>
 			<object class="wxBoxSizer">
@@ -131,6 +206,7 @@
 		<size>450,100</size>
 		<title></title>
 		<centered>1</centered>
+		<aui_managed>0</aui_managed>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
