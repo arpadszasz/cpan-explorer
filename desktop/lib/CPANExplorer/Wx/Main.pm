@@ -32,6 +32,8 @@ sub initialize {
     $self->xrc_resource->LoadFrame( $self, undef, 'main_frame' );
     $self->frames->{main_frame} = $self->FindWindow('main_frame');
 
+    $self->FindWindow('main_textctrl_search')->SetFocus();
+
     EVT_MENU(
         $self,
         Wx::XmlResource::GetXRCID('main_menu_file_preferences'),
