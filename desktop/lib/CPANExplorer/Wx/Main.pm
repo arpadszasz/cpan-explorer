@@ -56,6 +56,32 @@ sub initialize {
         sub { $self->_search_module },
     );
 
+    EVT_LIST_ITEM_RIGHT_CLICK(
+        $self,
+        Wx::XmlResource::GetXRCID('main_listctrl_search'),
+        sub {
+            my ( $this, $event ) = @_;
+
+            return unless $event->GetIndex >= 0;
+
+            my $menu = Wx::Menu->new;
+            $menu->Append( 1, 'Install' );
+            $menu->Append( 2, 'Install without testing' );
+            $menu->Append( 3, 'Force install' );
+            $this->PopupMenu(
+                $menu,
+                $event->GetPoint->x,
+                $event->GetPoint->y + 100
+            );
+
+            EVT_MENU( $this, 1, sub { $self->_install_module() } );
+            EVT_MENU( $this, 2, sub { $self->_install_module('notest') } );
+            EVT_MENU( $this, 3, sub { $self->_install_module('force') } );
+
+            return;
+        },
+    );
+
     EVT_CLOSE( $self, sub { $self->_close_window } );
 
     return;
@@ -162,6 +188,12 @@ sub _search_module {
     }
 
     $listctrl->Show(1);
+
+    return;
+}
+
+sub _install_module {
+    my $self = shift;
 
     return;
 }
