@@ -79,7 +79,7 @@ sub initialize {
             $this->PopupMenu(
                 $menu,
                 $event->GetPoint->x,
-                $event->GetPoint->y + 100
+                $event->GetPoint->y + 50
             );
 
             EVT_MENU( $this, 1, sub { $self->_install_module() } );
