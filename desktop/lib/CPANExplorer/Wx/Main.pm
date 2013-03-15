@@ -56,6 +56,12 @@ sub initialize {
         sub { $self->_search_module },
     );
 
+    EVT_TEXT_ENTER(
+        $self,
+        Wx::XmlResource::GetXRCID('main_textctrl_search'),
+        sub { $self->_search_module },
+    );
+
     EVT_LIST_ITEM_RIGHT_CLICK(
         $self,
         Wx::XmlResource::GetXRCID('main_listctrl_search'),

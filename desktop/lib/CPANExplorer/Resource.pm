@@ -89,6 +89,7 @@ __[ xrc ]__
 											<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
 											<border>5</border>
 											<object class="wxTextCtrl" name="main_textctrl_search">
+												<style>wxTE_PROCESS_ENTER</style>
 												<size>250,-1</size>
 												<value></value>
 											</object>
