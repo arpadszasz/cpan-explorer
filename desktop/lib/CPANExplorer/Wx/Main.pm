@@ -166,41 +166,53 @@ sub _search_module {
 
     Wx::BusyCursor->new;
 
-    my $response = "HTTP::Tiny"->new->post(
-        "http://api.metacpan.org/v0/release/_search" => {
-            content => to_json($query),
-            headers => {
-                "Content-Type" => "application/json",
+    eval {
+        my $response = "HTTP::Tiny"->new->post(
+            "http://api.metacpan.org/v0/release/_search" => {
+                content => to_json($query),
+                headers => {
+                    "Content-Type" => "application/json",
+                },
             },
-        },
-    );
-
-    my $result = from_json( $response->{content} );
-
-    $listctrl->Show(0);
-
-    $listctrl->InsertColumn( 0, '#' );
-    $listctrl->InsertColumn( 1, 'Distribution' );
-    $listctrl->InsertColumn( 2, 'Version' );
-
-    $listctrl->SetColumnWidth( 0, 30 );
-    $listctrl->SetColumnWidth( 1, 250 );
-    $listctrl->SetColumnWidth( 2, 50 );
-
-    foreach ( 1 .. ( scalar @{ $result->{hits}->{hits} } ) ) {
-        my $dist = $result->{hits}->{hits}->[ $_ - 1 ];
-
-        my $row = $listctrl->InsertStringImageItem(
-            $_,
-            $_,
-            0
         );
-        $listctrl->SetItemData( $row, $_ );
-        $listctrl->SetItem( $row, 1, $dist->{fields}->{distribution} );
-        $listctrl->SetItem( $row, 2, $dist->{fields}->{version} );
-    }
 
-    $listctrl->Show(1);
+        my $result = from_json( $response->{content} );
+
+        $listctrl->Show(0);
+
+        $listctrl->InsertColumn( 0, '#' );
+        $listctrl->InsertColumn( 1, 'Distribution' );
+        $listctrl->InsertColumn( 2, 'Version' );
+
+        $listctrl->SetColumnWidth( 0, 30 );
+        $listctrl->SetColumnWidth( 1, 250 );
+        $listctrl->SetColumnWidth( 2, 50 );
+
+        foreach ( 1 .. ( scalar @{ $result->{hits}->{hits} } ) ) {
+            my $dist = $result->{hits}->{hits}->[ $_ - 1 ];
+
+            my $row = $listctrl->InsertStringImageItem(
+                $_,
+                $_,
+                0
+            );
+            $listctrl->SetItemData( $row, $_ );
+            $listctrl->SetItem( $row, 1, $dist->{fields}->{distribution} );
+            $listctrl->SetItem( $row, 2, $dist->{fields}->{version} );
+        }
+
+        $listctrl->Show(1);
+    };
+
+    if ($@) {
+        my $dialog = Wx::MessageDialog->new(
+            $self->frames->{top_level_frame},
+            "MetaCPAN API search error!\n$@",
+            'Search error',
+            wxOK | wxICON_ERROR
+        );
+        $dialog->ShowModal;
+    }
 
     return;
 }
