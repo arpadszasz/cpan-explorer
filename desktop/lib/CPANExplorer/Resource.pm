@@ -33,7 +33,7 @@ __[ xrc ]__
 <resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
 	<object class="wxFrame" name="main_frame">
 		<style>wxCAPTION|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER|wxSYSTEM_MENU|wxTAB_TRAVERSAL</style>
-		<size>700,550</size>
+		<size>600,400</size>
 		<title>CPAN Explorer</title>
 		<centered>1</centered>
 		<aui_managed>0</aui_managed>
@@ -58,63 +58,89 @@ __[ xrc ]__
 				</object>
 			</object>
 		</object>
-		<object class="wxNotebook" name="m_notebook2">
-			<object class="notebookpage">
-				<label>Search</label>
-				<selected>1</selected>
-				<object class="wxPanel" name="m_panel3">
-					<style>wxTAB_TRAVERSAL</style>
-					<object class="wxBoxSizer">
-						<orient>wxVERTICAL</orient>
-						<object class="sizeritem">
-							<option>0</option>
-							<flag>wxEXPAND</flag>
-							<border>5</border>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND | wxALL</flag>
+				<border>5</border>
+				<object class="wxNotebook" name="m_notebook2">
+					<object class="notebookpage">
+						<label>Search</label>
+						<selected>1</selected>
+						<object class="wxPanel" name="m_panel3">
+							<style>wxTAB_TRAVERSAL</style>
 							<object class="wxBoxSizer">
-								<orient>wxHORIZONTAL</orient>
-								<object class="spacer">
-									<option>1</option>
-									<flag>wxEXPAND</flag>
-									<border>5</border>
-									<size>0,0</size>
-								</object>
+								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
 									<option>0</option>
-									<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+									<flag>wxEXPAND</flag>
 									<border>5</border>
-									<object class="wxTextCtrl" name="main_textctrl_search">
-										<size>250,-1</size>
-										<value></value>
+									<object class="wxBoxSizer">
+										<orient>wxHORIZONTAL</orient>
+										<object class="spacer">
+											<option>1</option>
+											<flag>wxEXPAND</flag>
+											<border>5</border>
+											<size>0,0</size>
+										</object>
+										<object class="sizeritem">
+											<option>0</option>
+											<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+											<border>5</border>
+											<object class="wxTextCtrl" name="main_textctrl_search">
+												<size>250,-1</size>
+												<value></value>
+											</object>
+										</object>
+										<object class="sizeritem">
+											<option>0</option>
+											<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+											<border>5</border>
+											<object class="wxButton" name="main_button_search">
+												<label>_Search</label>
+												<default>0</default>
+											</object>
+										</object>
+										<object class="spacer">
+											<option>1</option>
+											<flag>wxEXPAND</flag>
+											<border>5</border>
+											<size>0,0</size>
+										</object>
 									</object>
 								</object>
 								<object class="sizeritem">
-									<option>0</option>
-									<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
-									<border>5</border>
-									<object class="wxButton" name="main_button_search">
-										<label>_Search</label>
-										<default>0</default>
-									</object>
-								</object>
-								<object class="spacer">
 									<option>1</option>
 									<flag>wxEXPAND</flag>
 									<border>5</border>
-									<size>0,0</size>
+									<object class="wxBoxSizer">
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<option>1</option>
+											<flag>wxALL|wxEXPAND</flag>
+											<border>5</border>
+											<object class="wxListCtrl" name="main_listctrl_search">
+												<style>wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES</style>
+											</object>
+										</object>
+									</object>
 								</object>
 							</object>
 						</object>
-						<object class="sizeritem">
-							<option>1</option>
-							<flag>wxEXPAND</flag>
-							<border>5</border>
+					</object>
+					<object class="notebookpage">
+						<label>Installed</label>
+						<selected>0</selected>
+						<object class="wxPanel" name="m_panel4">
+							<style>wxTAB_TRAVERSAL</style>
 							<object class="wxBoxSizer">
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
 									<option>1</option>
 									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
-									<object class="wxListCtrl" name="main_listctrl_search">
+									<object class="wxListCtrl" name="main_listctrl_installed">
 										<style>wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES</style>
 									</object>
 								</object>
@@ -123,11 +149,32 @@ __[ xrc ]__
 					</object>
 				</object>
 			</object>
-			<object class="notebookpage">
-				<label>Installed</label>
-				<selected>0</selected>
-				<object class="wxPanel" name="m_panel4">
-					<style>wxTAB_TRAVERSAL</style>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxBoxSizer">
+					<orient>wxVERTICAL</orient>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxALL</flag>
+						<border>5</border>
+						<object class="wxStaticText" name="m_staticText4">
+							<label>Output</label>
+							<wrap>-1</wrap>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxALL|wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxTextCtrl" name="main_textctrl_terminal">
+							<style>wxTE_MULTILINE</style>
+							<bg>#4c4c4c</bg>
+							<fg>#ffffff</fg>
+							<value></value>
+						</object>
+					</object>
 				</object>
 			</object>
 		</object>
