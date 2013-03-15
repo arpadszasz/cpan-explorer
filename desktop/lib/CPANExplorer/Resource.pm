@@ -34,6 +34,7 @@ __[ xrc ]__
 	<object class="wxFrame" name="main_frame">
 		<style>wxCAPTION|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER|wxSYSTEM_MENU|wxTAB_TRAVERSAL</style>
 		<size>600,400</size>
+		<bg>#dcdcdc</bg>
 		<title>CPAN Explorer</title>
 		<centered>1</centered>
 		<aui_managed>0</aui_managed>
@@ -65,11 +66,13 @@ __[ xrc ]__
 				<flag>wxEXPAND | wxALL</flag>
 				<border>5</border>
 				<object class="wxNotebook" name="m_notebook2">
+					<bg>#dcdcdc</bg>
 					<object class="notebookpage">
 						<label>Search</label>
 						<selected>1</selected>
 						<object class="wxPanel" name="m_panel3">
 							<style>wxTAB_TRAVERSAL</style>
+							<bg>#dcdcdc</bg>
 							<object class="wxBoxSizer">
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
@@ -283,6 +286,7 @@ __[ xrc ]__
 	<object class="wxFrame" name="preferences_frame">
 		<style>wxCAPTION|wxCLOSE_BOX|wxFRAME_FLOAT_ON_PARENT|wxSYSTEM_MENU|wxTAB_TRAVERSAL</style>
 		<size>450,100</size>
+		<bg>#dcdcdc</bg>
 		<title></title>
 		<centered>1</centered>
 		<aui_managed>0</aui_managed>
@@ -294,6 +298,7 @@ __[ xrc ]__
 				<border>5</border>
 				<object class="wxPanel" name="m_panel2">
 					<style>wxTAB_TRAVERSAL</style>
+					<bg>#dcdcdc</bg>
 					<object class="wxBoxSizer">
 						<orient>wxHORIZONTAL</orient>
 						<object class="spacer">
@@ -307,6 +312,7 @@ __[ xrc ]__
 							<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
 							<border>5</border>
 							<object class="wxStaticText" name="m_staticText3">
+								<bg>#dcdcdc</bg>
 								<label>Perl installation</label>
 								<wrap>-1</wrap>
 							</object>
