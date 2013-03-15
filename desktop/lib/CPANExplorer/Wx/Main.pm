@@ -170,9 +170,14 @@ sub _search_module {
     my $result = from_json( $response->{content} );
 
     $listctrl->Show(0);
+
     $listctrl->InsertColumn( 0, '#' );
     $listctrl->InsertColumn( 1, 'Distribution' );
     $listctrl->InsertColumn( 2, 'Version' );
+
+    $listctrl->SetColumnWidth( 0, 30 );
+    $listctrl->SetColumnWidth( 1, 250 );
+    $listctrl->SetColumnWidth( 2, 50 );
 
     foreach ( 1 .. ( scalar @{ $result->{hits}->{hits} } ) ) {
         my $dist = $result->{hits}->{hits}->[ $_ - 1 ];
