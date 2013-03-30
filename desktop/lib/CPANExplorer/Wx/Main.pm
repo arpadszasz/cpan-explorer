@@ -13,6 +13,7 @@ use CPANExplorer::Wx::About;
 use HTTP::Tiny;
 use JSON;
 use IPC::Open3;
+use ExtUtils::Installed;
 
 extends 'Wx::Frame';
 with 'CPANExplorer::Role::Setup';
@@ -98,6 +99,18 @@ sub initialize {
 
             return;
         },
+    );
+
+    EVT_NOTEBOOK_PAGE_CHANGED(
+        $self,
+        Wx::XmlResource::GetXRCID('main_notebook'),
+        sub {
+            my $self = shift;
+            if ($self->FindWindow('main_notebook')->GetSelection == 1) {
+                $self->_list_installed;
+            }
+            return;
+        }
     );
 
     EVT_CLOSE( $self, sub { $self->_close_window } );
@@ -264,6 +277,41 @@ sub _install_module {
     $dialog->ShowModal;
 
     waitpid($pid, 0);
+
+    return;
+}
+
+sub _list_installed {
+    my $self = shift;
+
+    my $listctrl = $self->FindWindow('main_listctrl_installed');
+    $listctrl->ClearAll;
+    $listctrl->Show(0);
+    $listctrl->InsertColumn( 0, '#' );
+    $listctrl->InsertColumn( 1, 'Distribution' );
+    $listctrl->InsertColumn( 2, 'Version' );
+    $listctrl->SetColumnWidth( 0, 30 );
+    $listctrl->SetColumnWidth( 1, 250 );
+    $listctrl->SetColumnWidth( 2, 50 );
+
+    Wx::BusyCursor->new;
+
+    my $installed = ExtUtils::Installed->new;
+    my $count = 1;
+    foreach ($installed->modules) {
+        my $row = $listctrl->InsertStringImageItem(
+            $count,
+            $count,
+            0
+        );
+        $listctrl->SetItemData( $row, $count );
+        $listctrl->SetItem( $row, 1, $_ );
+        $listctrl->SetItem( $row, 2, $installed->version($_) );
+
+        $count++;
+    }
+
+    $listctrl->Show(1);
 
     return;
 }

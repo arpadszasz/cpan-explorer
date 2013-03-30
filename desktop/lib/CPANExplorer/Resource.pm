@@ -65,7 +65,7 @@ __[ xrc ]__
 				<option>1</option>
 				<flag>wxEXPAND | wxALL</flag>
 				<border>5</border>
-				<object class="wxNotebook" name="m_notebook2">
+				<object class="wxNotebook" name="main_notebook">
 					<bg>#dcdcdc</bg>
 					<object class="notebookpage">
 						<label>Search</label>
