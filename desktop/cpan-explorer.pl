@@ -10,6 +10,14 @@ BEGIN {
     use File::Basename 'dirname';
     use File::Spec::Functions 'rel2abs';
     $RealBin = rel2abs( dirname(__FILE__) );
+
+    eval { require Cava::Packager };
+    if ( !$@ ) {
+        Cava::Packager->import;
+        if ( Cava::Packager::IsPackaged() ) {
+            $RealBin = Cava::Packager::GetBinPath();
+        }
+    }
 }
 
 use lib "$RealBin/lib";
