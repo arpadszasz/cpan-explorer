@@ -101,6 +101,33 @@ sub initialize {
         },
     );
 
+    EVT_LIST_ITEM_RIGHT_CLICK(
+        $self,
+        Wx::XmlResource::GetXRCID('main_listctrl_installed'),
+        sub {
+            my ( $this, $event ) = @_;
+
+            return unless $event->GetIndex >= 0;
+
+            my $distribution = $self->FindWindow('main_listctrl_installed')
+              ->GetItem( $event->GetData - 1, 1 )->GetText;
+            $distribution =~ s/-/::/g;
+
+            my $menu = Wx::Menu->new;
+            $menu->Append( 1, 'Remove' );
+            $this->PopupMenu(
+                $menu,
+                $event->GetPoint->x,
+                $event->GetPoint->y + 50
+            );
+
+            EVT_MENU( $this, 1,
+                sub { $self->_remove_module($distribution) } );
+
+            return;
+        },
+    );
+
     EVT_NOTEBOOK_PAGE_CHANGED(
         $self,
         Wx::XmlResource::GetXRCID('main_notebook'),
@@ -315,6 +342,41 @@ sub _list_installed {
 
     return;
 }
+
+sub _remove_module {
+    my $self         = shift;
+    my $distribution = shift;
+
+    $self->FindWindow('main_textctrl_terminal')->Clear;
+
+    my $pm_uninstall
+      = $self->cfg->{defaults}->{perl}->{path} . '/pm-uninstall';
+
+    Wx::BusyCursor->new;
+
+    my ( $stdout_fh, $stdin_fh );
+    my $pid = open3( $stdin_fh, $stdout_fh, $stdout_fh,
+        "$pm_uninstall -f $distribution" );
+
+    my $status;
+    while (<$stdout_fh>) {
+        $self->FindWindow('main_textctrl_terminal')->AppendText($_);
+        $status = $_;
+    }
+
+    my $dialog = Wx::MessageDialog->new(
+        $self->frames->{main_frame},
+        $status,
+        '',
+        wxOK | wxICON_INFORMATION
+    );
+    $dialog->ShowModal;
+
+    waitpid($pid, 0);
+
+    return;
+}
+
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
