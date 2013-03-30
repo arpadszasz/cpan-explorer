@@ -13,20 +13,28 @@ BEGIN {
 }
 
 use lib "$RealBin/lib";
+use Config::INI::Reader;
 use CPANExplorer::Resource;
 use CPANExplorer::Wx;
+
+my $config_filename = "$RealBin/cpan-explorer.ini";
+my $defaults        = {};
+if ( -r $config_filename ) {
+    $defaults = Config::INI::Reader->read_file($config_filename);
+}
 
 my $resource    = CPANExplorer::Resource->new;
 
 my $app = CPANExplorer::Wx->new(
     {
         cfg => {
-            program_version => '0.1',
+            program_version => '0.2',
             copyright_start => 2013,
             xrc_file        => $resource->xrc_file,
             program_path    => $RealBin,
+            config_file     => $config_filename,
             app_name        => 'CPAN Explorer',
-            defaults        => {},
+            defaults        => $defaults,
         }
     }
 );

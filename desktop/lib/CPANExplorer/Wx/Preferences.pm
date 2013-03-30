@@ -9,6 +9,8 @@ use Wx ':everything';
 use Wx::Event ':everything';
 use Wx::XRC;
 use POSIX 'strftime';
+use Config::INI::Writer;
+use Config::INI::Reader;
 
 extends 'Wx::Frame';
 with 'CPANExplorer::Role::Setup';
@@ -33,6 +35,10 @@ sub initialize {
     $self->frames->{preferences_frame} = $self->FindWindow('preferences_frame');
 
     $self->frames->{main_frame}->Disable;
+
+    $self->FindWindow('preferences_textctrl_perl_path')->SetValue(
+        $self->cfg->{defaults}->{perl}->{path}
+    );
 
     EVT_BUTTON(
         $self,
@@ -68,7 +74,25 @@ sub initialize {
 
 sub _save_preferences {
     my $self = shift;
+
+    my $data = {
+        perl => {
+            path =>
+              $self->FindWindow('preferences_textctrl_perl_path')->GetValue
+        }
+    };
+
+    my $cfg_data = Config::INI::Writer->write_string($data);
+
+    # convert to DOS line-ending
+    $cfg_data =~ s/\012/\015\012/gsm;
+
+    open( my $config_fh, '>', $self->cfg->{config_file} );
+    print $config_fh $cfg_data;
+    close $config_fh;
+
     $self->_close_window;
+
     return;
 }
 
