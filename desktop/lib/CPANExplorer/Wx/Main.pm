@@ -351,6 +351,11 @@ sub _remove_module {
 
     my $pm_uninstall
       = $self->cfg->{defaults}->{perl}->{path} . '/pm-uninstall';
+    if ( !-r $pm_uninstall ) {
+        $pm_uninstall
+          = $self->cfg->{defaults}->{perl}->{path}
+          . '../site/bin/pm-uninstall';
+    }
 
     Wx::BusyCursor->new;
 
