@@ -12,6 +12,7 @@ use CPANExplorer::Wx::Preferences;
 use CPANExplorer::Wx::About;
 use HTTP::Tiny;
 use JSON;
+use IPC::Open3;
 
 extends 'Wx::Frame';
 with 'CPANExplorer::Role::Setup';
@@ -72,6 +73,10 @@ sub initialize {
 
             return unless $event->GetIndex >= 0;
 
+            my $distribution = $self->FindWindow('main_listctrl_search')
+              ->GetItem( $event->GetData - 1, 1 )->GetText;
+            $distribution =~ s/-/::/g;
+
             my $menu = Wx::Menu->new;
             $menu->Append( 1, 'Install' );
             $menu->Append( 2, 'Install without testing' );
@@ -82,9 +87,12 @@ sub initialize {
                 $event->GetPoint->y + 50
             );
 
-            EVT_MENU( $this, 1, sub { $self->_install_module() } );
-            EVT_MENU( $this, 2, sub { $self->_install_module('notest') } );
-            EVT_MENU( $this, 3, sub { $self->_install_module('force') } );
+            EVT_MENU( $this, 1,
+                sub { $self->_install_module($distribution) } );
+            EVT_MENU( $this, 2,
+                sub { $self->_install_module( $distribution, 'notest' ) } );
+            EVT_MENU( $this, 3,
+                sub { $self->_install_module( $distribution, 'force' ) } );
 
             return;
         },
@@ -218,7 +226,32 @@ sub _search_module {
 }
 
 sub _install_module {
-    my $self = shift;
+    my $self         = shift;
+    my $distribution = shift;
+    my $option       = shift;
+
+    $self->FindWindow('main_textctrl_terminal')->Clear;
+
+    my $flags;
+    given ($option) {
+        when ('notest') { $flags = '-n' }
+        when ('force')  { $flags = '-f' }
+        default         { $flags = '' }
+    }
+
+    my $cpanm = $self->cfg->{defaults}->{perl}->{path} . '/cpanm';
+
+    Wx::BusyCursor->new;
+
+    my ( $stdout_fh, $stdin_fh );
+    my $pid = open3( $stdin_fh, $stdout_fh, $stdout_fh,
+        "$cpanm $flags $distribution" );
+
+    while (<$stdout_fh>) {
+        $self->FindWindow('main_textctrl_terminal')->AppendText($_);
+    }
+
+    waitpid($pid, 0);
 
     return;
 }
