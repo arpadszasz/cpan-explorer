@@ -146,6 +146,7 @@ __[ xrc ]__
 									<border>5</border>
 									<object class="wxListCtrl" name="main_listctrl_installed">
 										<style>wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES</style>
+										<size>-1,200</size>
 									</object>
 								</object>
 							</object>
@@ -154,7 +155,7 @@ __[ xrc ]__
 				</object>
 			</object>
 			<object class="sizeritem">
-				<option>1</option>
+				<option>0</option>
 				<flag>wxEXPAND</flag>
 				<border>5</border>
 				<object class="wxBoxSizer">
@@ -169,11 +170,12 @@ __[ xrc ]__
 						</object>
 					</object>
 					<object class="sizeritem">
-						<option>1</option>
+						<option>0</option>
 						<flag>wxALL|wxEXPAND</flag>
 						<border>5</border>
 						<object class="wxTextCtrl" name="main_textctrl_terminal">
 							<style>wxTE_MULTILINE</style>
+							<size>-1,80</size>
 							<bg>#4c4c4c</bg>
 							<fg>#ffffff</fg>
 							<value></value>
