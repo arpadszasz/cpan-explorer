@@ -247,11 +247,23 @@ sub _install_module {
     my $pid = open3( $stdin_fh, $stdout_fh, $stdout_fh,
         "$cpanm $flags $distribution" );
 
+    my $status;
     while (<$stdout_fh>) {
         $self->FindWindow('main_textctrl_terminal')->AppendText($_);
+        $status = $_;
     }
 
+    warn $pid;
+    my $dialog = Wx::MessageDialog->new(
+        $self->frames->{main_frame},
+        $status,
+        '',
+        wxOK | wxICON_INFORMATION
+    );
+    $dialog->ShowModal;
+
     waitpid($pid, 0);
+    warn $pid;
 
     return;
 }
