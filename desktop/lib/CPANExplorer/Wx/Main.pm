@@ -253,7 +253,6 @@ sub _install_module {
         $status = $_;
     }
 
-    warn $pid;
     my $dialog = Wx::MessageDialog->new(
         $self->frames->{main_frame},
         $status,
@@ -263,7 +262,6 @@ sub _install_module {
     $dialog->ShowModal;
 
     waitpid($pid, 0);
-    warn $pid;
 
     return;
 }
