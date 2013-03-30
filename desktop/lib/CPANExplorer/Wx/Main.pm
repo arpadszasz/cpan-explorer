@@ -35,6 +35,8 @@ sub initialize {
 
     $self->FindWindow('main_textctrl_search')->SetFocus();
 
+    $self->_show_preferences_dialog unless -r $self->cfg->{config_file};
+
     EVT_MENU(
         $self,
         Wx::XmlResource::GetXRCID('main_menu_file_preferences'),

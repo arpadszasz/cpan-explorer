@@ -37,7 +37,7 @@ sub initialize {
     $self->frames->{main_frame}->Disable;
 
     $self->FindWindow('preferences_textctrl_perl_path')->SetValue(
-        $self->cfg->{defaults}->{perl}->{path}
+        $self->cfg->{defaults}->{perl}->{path} || ''
     );
 
     EVT_BUTTON(
