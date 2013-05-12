@@ -90,12 +90,18 @@ sub initialize {
                 $event->GetPoint->y + 50
             );
 
-            EVT_MENU( $this, 1,
-                sub { $self->_install_module($distribution) } );
-            EVT_MENU( $this, 2,
-                sub { $self->_install_module( $distribution, 'notest' ) } );
-            EVT_MENU( $this, 3,
-                sub { $self->_install_module( $distribution, 'force' ) } );
+            EVT_MENU(
+                $this, 1,
+                sub { $self->_install_module($distribution) }
+            );
+            EVT_MENU(
+                $this, 2,
+                sub { $self->_install_module( $distribution, 'notest' ) }
+            );
+            EVT_MENU(
+                $this, 3,
+                sub { $self->_install_module( $distribution, 'force' ) }
+            );
 
             return;
         },
@@ -121,8 +127,10 @@ sub initialize {
                 $event->GetPoint->y + 50
             );
 
-            EVT_MENU( $this, 1,
-                sub { $self->_remove_module($distribution) } );
+            EVT_MENU(
+                $this, 1,
+                sub { $self->_remove_module($distribution) }
+            );
 
             return;
         },
@@ -133,14 +141,20 @@ sub initialize {
         Wx::XmlResource::GetXRCID('main_notebook'),
         sub {
             my $self = shift;
-            if ($self->FindWindow('main_notebook')->GetSelection == 1) {
+            if ( $self->FindWindow('main_notebook')->GetSelection == 1 ) {
                 $self->_list_installed;
             }
-            elsif ($self->FindWindow('main_notebook')->GetSelection == 2) {
+            elsif ( $self->FindWindow('main_notebook')->GetSelection == 2 ) {
                 $self->_list_updates;
             }
             return;
         }
+    );
+
+    EVT_BUTTON(
+        $self,
+        Wx::XmlResource::GetXRCID('main_button_update'),
+        sub { $self->_update_modules },
     );
 
     EVT_CLOSE( $self, sub { $self->_close_window } );
@@ -289,8 +303,10 @@ sub _install_module {
     Wx::BusyCursor->new;
 
     my ( $stdout_fh, $stdin_fh );
-    my $pid = open3( $stdin_fh, $stdout_fh, $stdout_fh,
-        "$cpanm $flags $distribution" );
+    my $pid = open3(
+        $stdin_fh, $stdout_fh, $stdout_fh,
+        "$cpanm $flags $distribution"
+    );
 
     my $status;
     while (<$stdout_fh>) {
@@ -306,7 +322,7 @@ sub _install_module {
     );
     $dialog->ShowModal;
 
-    waitpid($pid, 0);
+    waitpid( $pid, 0 );
 
     return;
 }
@@ -327,8 +343,8 @@ sub _list_installed {
     Wx::BusyCursor->new;
 
     my $installed = ExtUtils::Installed->new;
-    my $count = 1;
-    foreach ($installed->modules) {
+    my $count     = 1;
+    foreach ( $installed->modules ) {
         my $row = $listctrl->InsertStringImageItem(
             $count,
             $count,
@@ -363,8 +379,10 @@ sub _remove_module {
     Wx::BusyCursor->new;
 
     my ( $stdout_fh, $stdin_fh );
-    my $pid = open3( $stdin_fh, $stdout_fh, $stdout_fh,
-        "$pm_uninstall -f $distribution" );
+    my $pid = open3(
+        $stdin_fh, $stdout_fh, $stdout_fh,
+        "$pm_uninstall -f $distribution"
+    );
 
     my $status;
     while (<$stdout_fh>) {
@@ -380,7 +398,7 @@ sub _remove_module {
     );
     $dialog->ShowModal;
 
-    waitpid($pid, 0);
+    waitpid( $pid, 0 );
 
     return;
 }
@@ -406,8 +424,10 @@ sub _list_updates {
     Wx::BusyCursor->new;
 
     my ( $stdout_fh, $stdin_fh );
-    my $pid = open3( $stdin_fh, $stdout_fh, $stdout_fh,
-        "$cpanoutdated --verbose" );
+    my $pid = open3(
+        $stdin_fh, $stdout_fh, $stdout_fh,
+        "$cpanoutdated --verbose"
+    );
 
     my $count = 1;
     while (<$stdout_fh>) {
@@ -415,7 +435,7 @@ sub _list_updates {
             my $row = $listctrl->InsertStringImageItem(
                 $count,
                 $count,
-                0
+                0,
             );
             $listctrl->SetItemData( $row, $count );
             $listctrl->SetItem( $row, 1, $1 );
@@ -427,7 +447,48 @@ sub _list_updates {
     }
 
     $listctrl->Show(1);
-    
+
+    waitpid( $pid, 0 );
+
+    return;
+}
+
+sub _update_modules {
+    my $self = shift;
+
+    my $listctrl = $self->FindWindow('main_listctrl_updates');
+
+    my $cpanm = $self->cfg->{defaults}->{perl}->{path} . '/cpanm';
+
+    Wx::BusyCursor->new;
+
+    my $count = 0;
+    while ( my $module = $listctrl->GetItem( $count, 1 )->GetText ) {
+        my ( $stdout_fh, $stdin_fh );
+        my $pid = open3(
+            $stdin_fh, $stdout_fh, $stdout_fh,
+            "$cpanm -q $module"
+        );
+
+        my $status;
+        while (<$stdout_fh>) {
+            $self->FindWindow('main_textctrl_terminal')->AppendText($_);
+            $status = $_;
+        }
+
+        waitpid( $pid, 0 );
+
+        $count++;
+    }
+
+    my $dialog = Wx::MessageDialog->new(
+        $self->frames->{main_frame},
+        'Modules updated',
+        '',
+        wxOK | wxICON_INFORMATION
+    );
+    $dialog->ShowModal;
+
     return;
 }
 
