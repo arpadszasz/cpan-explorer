@@ -136,6 +136,9 @@ sub initialize {
             if ($self->FindWindow('main_notebook')->GetSelection == 1) {
                 $self->_list_installed;
             }
+            elsif ($self->FindWindow('main_notebook')->GetSelection == 2) {
+                $self->_list_updates;
+            }
             return;
         }
     );
@@ -382,6 +385,51 @@ sub _remove_module {
     return;
 }
 
+sub _list_updates {
+    my $self = shift;
+
+    my $listctrl = $self->FindWindow('main_listctrl_updates');
+    $listctrl->ClearAll;
+    $listctrl->Show(0);
+    $listctrl->InsertColumn( 0, '#' );
+    $listctrl->InsertColumn( 1, 'Distribution' );
+    $listctrl->InsertColumn( 2, 'Old version' );
+    $listctrl->InsertColumn( 3, 'New version' );
+    $listctrl->SetColumnWidth( 0, 30 );
+    $listctrl->SetColumnWidth( 1, 210 );
+    $listctrl->SetColumnWidth( 2, 70 );
+    $listctrl->SetColumnWidth( 3, 70 );
+
+    my $cpanoutdated
+      = $self->cfg->{defaults}->{perl}->{path} . '/cpan-outdated';
+
+    Wx::BusyCursor->new;
+
+    my ( $stdout_fh, $stdin_fh );
+    my $pid = open3( $stdin_fh, $stdout_fh, $stdout_fh,
+        "$cpanoutdated --verbose" );
+
+    my $count = 1;
+    while (<$stdout_fh>) {
+        if (/^(.+?)\s+(.+?)\s+(.+?)\s/) {
+            my $row = $listctrl->InsertStringImageItem(
+                $count,
+                $count,
+                0
+            );
+            $listctrl->SetItemData( $row, $count );
+            $listctrl->SetItem( $row, 1, $1 );
+            $listctrl->SetItem( $row, 2, $2 );
+            $listctrl->SetItem( $row, 3, $3 );
+
+            $count++;
+        }
+    }
+
+    $listctrl->Show(1);
+    
+    return;
+}
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

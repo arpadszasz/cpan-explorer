@@ -34,7 +34,7 @@ __[ xrc ]__
 	<object class="wxFrame" name="main_frame">
 		<style>wxCAPTION|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER|wxSYSTEM_MENU|wxTAB_TRAVERSAL</style>
 		<size>600,400</size>
-		<bg>#dcdcdc</bg>
+		<bg>#f9f9f8</bg>
 		<title>CPAN Explorer</title>
 		<centered>1</centered>
 		<aui_managed>0</aui_managed>
@@ -66,13 +66,13 @@ __[ xrc ]__
 				<flag>wxEXPAND | wxALL</flag>
 				<border>5</border>
 				<object class="wxNotebook" name="main_notebook">
-					<bg>#dcdcdc</bg>
+					<bg>#f9f9f8</bg>
 					<object class="notebookpage">
 						<label>Search</label>
 						<selected>1</selected>
 						<object class="wxPanel" name="m_panel3">
 							<style>wxTAB_TRAVERSAL</style>
-							<bg>#dcdcdc</bg>
+							<bg>#f9f9f8</bg>
 							<object class="wxBoxSizer">
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
@@ -145,6 +145,54 @@ __[ xrc ]__
 									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
 									<object class="wxListCtrl" name="main_listctrl_installed">
+										<style>wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES</style>
+										<size>-1,200</size>
+									</object>
+								</object>
+							</object>
+						</object>
+					</object>
+					<object class="notebookpage">
+						<label>Updates</label>
+						<selected>0</selected>
+						<object class="wxPanel" name="m_panel5">
+							<style>wxTAB_TRAVERSAL</style>
+							<object class="wxBoxSizer">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<option>0</option>
+									<flag>wxEXPAND</flag>
+									<border>5</border>
+									<object class="wxBoxSizer">
+										<orient>wxHORIZONTAL</orient>
+										<object class="spacer">
+											<option>1</option>
+											<flag>wxEXPAND</flag>
+											<border>5</border>
+											<size>0,0</size>
+										</object>
+										<object class="sizeritem">
+											<option>0</option>
+											<flag>wxALL</flag>
+											<border>5</border>
+											<object class="wxButton" name="main_button_update">
+												<label>_Update all</label>
+												<default>0</default>
+											</object>
+										</object>
+										<object class="spacer">
+											<option>1</option>
+											<flag>wxEXPAND</flag>
+											<border>5</border>
+											<size>0,0</size>
+										</object>
+									</object>
+								</object>
+								<object class="sizeritem">
+									<option>1</option>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<object class="wxListCtrl" name="main_listctrl_updates">
 										<style>wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES</style>
 										<size>-1,200</size>
 									</object>
@@ -288,7 +336,7 @@ __[ xrc ]__
 	<object class="wxFrame" name="preferences_frame">
 		<style>wxCAPTION|wxCLOSE_BOX|wxFRAME_FLOAT_ON_PARENT|wxSYSTEM_MENU|wxTAB_TRAVERSAL</style>
 		<size>450,100</size>
-		<bg>#dcdcdc</bg>
+		<bg>#f9f9f8</bg>
 		<title></title>
 		<centered>1</centered>
 		<aui_managed>0</aui_managed>
@@ -300,7 +348,7 @@ __[ xrc ]__
 				<border>5</border>
 				<object class="wxPanel" name="m_panel2">
 					<style>wxTAB_TRAVERSAL</style>
-					<bg>#dcdcdc</bg>
+					<bg>#f9f9f8</bg>
 					<object class="wxBoxSizer">
 						<orient>wxHORIZONTAL</orient>
 						<object class="spacer">
@@ -314,7 +362,7 @@ __[ xrc ]__
 							<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
 							<border>5</border>
 							<object class="wxStaticText" name="m_staticText3">
-								<bg>#dcdcdc</bg>
+								<bg>#f9f9f8</bg>
 								<label>Perl installation</label>
 								<wrap>-1</wrap>
 							</object>
