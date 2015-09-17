@@ -3,6 +3,7 @@ package CPANExplorer::Wx::Main;
 use 5.012;
 use utf8;
 use warnings FATAL => 'all';
+no warnings "experimental::smartmatch";
 use Moose;
 use MooseX::NonMoose;
 use Wx ':everything';
